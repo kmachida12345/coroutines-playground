@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
         lifecycleScope.launch {
             val flow = viewModel.getRepos("kmachida12345")
             flow.collect {
-                Log.d("hoge", "onCreateView: hoge$it")
+                Log.d("hoge", "onCreateView: hoge${it.data}")
             }
             Log.d("hoge", "onCreateView: flow=${flow}")
         }
