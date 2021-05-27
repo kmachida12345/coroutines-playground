@@ -26,11 +26,7 @@ class MainFragment : Fragment() {
     ): View {
 
         lifecycleScope.launch {
-            val flow = viewModel.getRepos("kmachida12345")
-            flow.collect {
-                Log.d("hoge", "onCreateView: hoge${it.data}")
-            }
-            Log.d("hoge", "onCreateView: flow=${flow}")
+            viewModel.getRepos("kmachida12345")
         }
 
         return inflater.inflate(R.layout.main_fragment, container, false)

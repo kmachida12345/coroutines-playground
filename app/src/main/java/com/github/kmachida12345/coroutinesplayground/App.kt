@@ -1,8 +1,10 @@
 package com.github.kmachida12345.coroutinesplayground
 
 import android.app.Application
+import androidx.room.Room
 import com.github.kmachida12345.coroutinesplayground.model.GithubRepoRepositoryImpl
 import com.github.kmachida12345.coroutinesplayground.model.api.GithubApi
+import com.github.kmachida12345.coroutinesplayground.model.db.RepoDatabase
 import com.github.kmachida12345.coroutinesplayground.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext.startKoin
@@ -27,7 +29,10 @@ class App: Application() {
 
         single { GithubRepoRepositoryImpl(get()) }
 
-        viewModel { MainViewModel(get<GithubRepoRepositoryImpl>()) }
+        single { Room.databaseBuilder(this@App, RepoDatabase::class.java, "repo.db")
+            .build() }
+
+        viewModel { MainViewModel(get<GithubRepoRepositoryImpl>(), get()) }
     }
 
     override fun onCreate() {
