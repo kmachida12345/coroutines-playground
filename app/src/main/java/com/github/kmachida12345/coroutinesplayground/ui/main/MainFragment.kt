@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.lifecycleScope
 import com.github.kmachida12345.coroutinesplayground.R
 import kotlinx.coroutines.flow.collect
@@ -29,6 +30,13 @@ class MainFragment : Fragment() {
             viewModel.getRepos("kmachida12345")
         }
 
-        return inflater.inflate(R.layout.main_fragment, container, false)
+
+        val inflate = inflater.inflate(R.layout.main_fragment, container, false)
+        inflate.findViewById<Button>(R.id.next_page).setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.container, SecondFragment())
+                .commitNow()
+        }
+        return inflate
     }
 }
