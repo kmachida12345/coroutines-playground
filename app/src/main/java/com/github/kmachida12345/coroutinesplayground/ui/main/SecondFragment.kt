@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.github.kmachida12345.coroutinesplayground.R
@@ -21,19 +25,35 @@ class SecondFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.header),
-                        contentDescription = "",
-                        modifier = Modifier.height(180.dp).fillMaxWidth(),
-                        contentScale = ContentScale.Fit
-                    )
-                    Spacer(Modifier.height(16.dp))
+                MaterialTheme {
+                    val typography = MaterialTheme.typography
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.header),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .height(180.dp)
+                                .fillMaxWidth()
+                                .clip(shape = RoundedCornerShape(16.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(Modifier.height(64.dp))
 
-                    Text(text = "hello compose!")
-                    Greeting(text = "Android")
+                        Text(text = """hello compose!
+                            |ながーいながいテキストのサンプルです
+                            |えee
+                            |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            |a
+                            |a
+                        """.trimMargin(),
+                            style = typography.h6,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 2
+                        )
+                        Greeting(text = "Android")
+                    }
                 }
             }
         }
