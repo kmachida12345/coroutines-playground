@@ -22,16 +22,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.github.kmachida12345.coroutinesplayground.R
 import com.github.kmachida12345.coroutinesplayground.ui.component.Counter
 import com.github.kmachida12345.coroutinesplayground.ui.component.Greeting
 import com.github.kmachida12345.coroutinesplayground.ui.component.Names
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
+import androidx.compose.runtime.livedata.observeAsState
+import com.github.kmachida12345.coroutinesplayground.model.GithubRepo
+import com.github.kmachida12345.coroutinesplayground.ui.component.Repos
+
 
 class SecondFragment : Fragment() {
+    private val viewModel: MainViewModel by viewModel()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        lifecycleScope.launch {
+            viewModel.getRepos("kmachida12345")
+        }
         return ComposeView(requireContext()).apply {
             setContent {
                 val counterState = remember { mutableStateOf(0) }
+                val list by viewModel.repos.observeAsState()
 
                 MaterialTheme {
                     val typography = MaterialTheme.typography
@@ -67,6 +84,8 @@ class SecondFragment : Fragment() {
                         Names(modifier = Modifier.weight(1f), list = List(100) {
                             "hello android $it st"
                         })
+
+                        Repos(modifier = Modifier.weight(1f), list = list)
                         Counter(count = counterState.value,
                             updateCount = {newCount -> counterState.value = newCount})
                     }
